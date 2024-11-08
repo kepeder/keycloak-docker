@@ -111,6 +111,11 @@ jobs:
       - build
 
     steps:
+      - name: Prepare
+        run: |
+          version=$(grep -oP '^FROM quay.io/phasetwo/phasetwo-keycloak:\K[0-9]+\.[0-9]+\.[0-9]+' Dockerfile)
+          echo "KC_VERSION=${version}" >> $GITHUB_ENV
+
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
@@ -150,7 +155,7 @@ jobs:
             # pull request event
             type=ref,enable=true,priority=600,prefix=pr-,suffix=,event=pr
 
-            type=raw,value=$(grep -oP '^FROM quay.io/phasetwo/phasetwo-keycloak:\K[0-9]+\.[0-9]+\.[0-9]+' Dockerfile)
+            type=raw,value=${{ env.KC_VERSION }}
 
             # minimal (short sha)
             type=raw,value=latest
