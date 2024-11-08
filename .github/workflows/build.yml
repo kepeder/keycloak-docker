@@ -111,6 +111,9 @@ jobs:
       - build
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Prepare
         run: |
           version=$(grep -oP '^FROM quay.io/phasetwo/phasetwo-keycloak:\K[0-9]+\.[0-9]+\.[0-9]+' Dockerfile)
